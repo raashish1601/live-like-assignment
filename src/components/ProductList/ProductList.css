@@ -17,11 +17,21 @@
 @media (max-width: 1200px) {
   .product-list {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .product-list {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .product-list--empty {
+    min-height: 300px;
+    font-size: 16px;
+    padding: 20px;
   }
 }

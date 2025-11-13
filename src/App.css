@@ -23,3 +23,9 @@ body {
   flex-direction: column;
   background-color: #fff;
 }
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+}

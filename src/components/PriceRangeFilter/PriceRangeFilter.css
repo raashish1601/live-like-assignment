@@ -100,3 +100,28 @@
   font-weight: 500;
   color: #333;
 }
+
+@media (max-width: 768px) {
+  .price-range-filter {
+    min-width: auto;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .price-range-filter__title {
+    font-size: 16px;
+  }
+
+  .price-range-filter__content {
+    gap: 16px;
+  }
+
+  .price-range-filter__range-display {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
