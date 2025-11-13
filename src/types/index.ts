@@ -11,20 +11,7 @@ export interface Product {
   };
 }
 
-export interface Category {
-  name: string;
-}
-
 export type SortOption = 'none' | 'price-asc' | 'price-desc' | 'discount-asc' | 'discount-desc';
-
-export interface FilterState {
-  selectedCategory: string | null;
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  sortOption: SortOption;
-}
 
 export interface ProductWithDiscount extends Product {
   discount: number;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDebounce } from '../../hooks/useDebounce';
 import './PriceRangeFilter.css';
 
 interface PriceRangeFilterProps {
@@ -26,6 +27,10 @@ export const PriceRangeFilter = ({
   const [localMax, setLocalMax] = useState(currentMax);
   const [localRating, setLocalRating] = useState(minRating);
 
+  const debouncedMin = useDebounce(localMin, 300);
+  const debouncedMax = useDebounce(localMax, 300);
+  const debouncedRating = useDebounce(localRating, 300);
+
   useEffect(() => {
     setLocalMin(currentMin);
     setLocalMax(currentMax);
@@ -48,20 +53,12 @@ export const PriceRangeFilter = ({
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onPriceRangeChange(Math.min(localMin, localMax), Math.max(localMax, localMin));
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [localMin, localMax, onPriceRangeChange]);
+    onPriceRangeChange(Math.min(debouncedMin, debouncedMax), Math.max(debouncedMax, debouncedMin));
+  }, [debouncedMin, debouncedMax, onPriceRangeChange]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onRatingChange(localRating);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [localRating, onRatingChange]);
+    onRatingChange(debouncedRating);
+  }, [debouncedRating, onRatingChange]);
 
   return (
     <div className="price-range-filter">
