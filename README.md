@@ -2,13 +2,19 @@
 
 A simple product listing application built with React and TypeScript. Displays products from an API with category filtering, price filtering, and sorting capabilities.
 
+## Live Demo
+
+🌐 **Deployed Application:** [https://live-like-assignment.vercel.app/](https://live-like-assignment.vercel.app/)
+
 ## Features
 
 - Browse products by category
-- Filter products by price range
+- Filter products by price range and rating
 - Sort by price or discount
 - View all products or filter by specific category
 - Automatic discounts: 10% on jewellery, 30% on men's clothing
+- Product ratings and review counts
+- Debounced filter sliders for better performance
 
 ## Setup
 
