@@ -12,10 +12,6 @@ export const CategorySidebar = ({
   selectedCategory,
   onCategorySelect,
 }: CategorySidebarProps) => {
-  const handleCategoryClick = (category: string | null) => {
-    onCategorySelect(category);
-  };
-
   return (
     <div className="category-sidebar">
       <h2 className="category-sidebar__title">All categories</h2>
@@ -24,7 +20,7 @@ export const CategorySidebar = ({
           className={`category-sidebar__item ${
             selectedCategory === null ? 'category-sidebar__item--active' : ''
           }`}
-          onClick={() => handleCategoryClick(null)}
+          onClick={() => onCategorySelect(null)}
         >
           All categories
         </li>
@@ -34,7 +30,7 @@ export const CategorySidebar = ({
             className={`category-sidebar__item ${
               selectedCategory === category ? 'category-sidebar__item--active' : ''
             }`}
-            onClick={() => handleCategoryClick(category)}
+            onClick={() => onCategorySelect(category)}
           >
             {formatCategoryName(category)}
           </li>
