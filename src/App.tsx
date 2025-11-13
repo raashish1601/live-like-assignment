@@ -7,7 +7,7 @@ import { LoadingSpinner } from './components/LoadingSpinner/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage/ErrorMessage';
 import { useProducts } from './hooks/useProducts';
 import { addDiscountToProducts } from './utils/discountCalculator';
-import { filterByPriceRange, sortProducts } from './utils/productFilter';
+import { filterByPriceRange, filterByRating, sortProducts } from './utils/productFilter';
 import { SortOption } from './types';
 import { DEFAULT_PRICE_RANGE } from './constants';
 import './App.css';
@@ -19,6 +19,7 @@ function App() {
   const [sortOption, setSortOption] = useState<SortOption>('none');
   const [showPriceFilter, setShowPriceFilter] = useState(false);
   const [priceRange, setPriceRange] = useState(DEFAULT_PRICE_RANGE);
+  const [minRating, setMinRating] = useState(0);
   const [quantities, setQuantities] = useState<Record<number, number>>({});
 
   useEffect(() => {
@@ -38,9 +39,13 @@ function App() {
     return addDiscountToProducts(categoryProducts);
   }, [categoryProducts]);
 
-  const filteredProducts = useMemo(() => {
+  const filteredByPrice = useMemo(() => {
     return filterByPriceRange(productsWithDiscount, priceRange.min, priceRange.max);
   }, [productsWithDiscount, priceRange]);
+
+  const filteredProducts = useMemo(() => {
+    return filterByRating(filteredByPrice, minRating);
+  }, [filteredByPrice, minRating]);
 
   const sortedProducts = useMemo(() => {
     return sortProducts(filteredProducts, sortOption);
@@ -62,6 +67,10 @@ function App() {
 
   const handlePriceRangeChange = (min: number, max: number) => {
     setPriceRange({ min, max });
+  };
+
+  const handleRatingChange = (rating: number) => {
+    setMinRating(rating);
   };
 
   if (loading) {
@@ -100,7 +109,9 @@ function App() {
             maxPrice={priceBounds.max}
             currentMin={priceRange.min}
             currentMax={priceRange.max}
+            minRating={minRating}
             onPriceRangeChange={handlePriceRangeChange}
+            onRatingChange={handleRatingChange}
             onClose={() => setShowPriceFilter(false)}
           />
         </>

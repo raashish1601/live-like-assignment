@@ -11,6 +11,13 @@ export const filterByPriceRange = (
   });
 };
 
+export const filterByRating = (
+  products: ProductWithDiscount[],
+  minRating: number
+): ProductWithDiscount[] => {
+  return products.filter((product) => product.rating.rate >= minRating);
+};
+
 export const sortProducts = (
   products: ProductWithDiscount[],
   sortOption: SortOption

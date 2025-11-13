@@ -33,6 +33,11 @@ export const ProductCard = ({ product, quantity, onQuantityChange }: ProductCard
               <span className="product-card__discount-badge">-{product.discount}%</span>
             )}
           </div>
+          <div className="product-card__rating-container">
+            <span className="product-card__rating">
+              ⭐ {product.rating.rate.toFixed(1)} ({product.rating.count})
+            </span>
+          </div>
           <div className="product-card__quantity-container">
             <label className="product-card__quantity-label">Quantity:</label>
             <input

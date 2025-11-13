@@ -68,6 +68,18 @@
   font-weight: 600;
 }
 
+.product-card__rating-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-card__rating {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
 .product-card__quantity-container {
   display: flex;
   align-items: center;
