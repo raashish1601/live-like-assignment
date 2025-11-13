@@ -1,12 +1,5 @@
 import { ProductWithDiscount, SortOption } from '../types';
 
-/**
- * Filters products based on price range
- * @param products - Array of products to filter
- * @param minPrice - Minimum price
- * @param maxPrice - Maximum price
- * @returns Filtered array of products
- */
 export const filterByPriceRange = (
   products: ProductWithDiscount[],
   minPrice: number,
@@ -18,12 +11,6 @@ export const filterByPriceRange = (
   });
 };
 
-/**
- * Sorts products based on the selected sort option
- * @param products - Array of products to sort
- * @param sortOption - Sort option (price-asc, price-desc, discount-asc, discount-desc)
- * @returns Sorted array of products
- */
 export const sortProducts = (
   products: ProductWithDiscount[],
   sortOption: SortOption
@@ -55,4 +42,3 @@ export const sortProducts = (
       return sortedProducts;
   }
 };
-

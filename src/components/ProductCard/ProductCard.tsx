@@ -21,11 +21,7 @@ export const ProductCard = ({ product, quantity, onQuantityChange }: ProductCard
       <h3 className="product-card__title">{product.title}</h3>
       <div className="product-card__content">
         <div className="product-card__image-container">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="product-card__image"
-          />
+          <img src={product.image} alt={product.title} className="product-card__image" />
         </div>
         <div className="product-card__details">
           <div className="product-card__price-container">
@@ -56,4 +52,3 @@ export const ProductCard = ({ product, quantity, onQuantityChange }: ProductCard
     </div>
   );
 };
-

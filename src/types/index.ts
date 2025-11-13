@@ -30,4 +30,3 @@ export interface ProductWithDiscount extends Product {
   discount: number;
   discountedPrice: number;
 }
-

@@ -37,9 +37,7 @@ export const PriceRangeFilter = ({
       </div>
       <div className="price-range-filter__content">
         <div className="price-range-filter__slider-container">
-          <label className="price-range-filter__label">
-            Min Price: ${currentMin.toFixed(2)}
-          </label>
+          <label className="price-range-filter__label">Min Price: ${currentMin.toFixed(2)}</label>
           <input
             type="range"
             min={minPrice}
@@ -51,9 +49,7 @@ export const PriceRangeFilter = ({
           />
         </div>
         <div className="price-range-filter__slider-container">
-          <label className="price-range-filter__label">
-            Max Price: ${currentMax.toFixed(2)}
-          </label>
+          <label className="price-range-filter__label">Max Price: ${currentMax.toFixed(2)}</label>
           <input
             type="range"
             min={minPrice}
@@ -65,10 +61,11 @@ export const PriceRangeFilter = ({
           />
         </div>
         <div className="price-range-filter__range-display">
-          <span>Range: ${currentMin.toFixed(2)} - ${currentMax.toFixed(2)}</span>
+          <span>
+            Range: ${currentMin.toFixed(2)} - ${currentMax.toFixed(2)}
+          </span>
         </div>
       </div>
     </div>
   );
 };
-

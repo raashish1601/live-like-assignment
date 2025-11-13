@@ -19,9 +19,9 @@ export const FilterControls = ({
       'none',
       'price-asc',
       'price-desc',
-      ...(isAllCategoriesSelected ? ['discount-asc', 'discount-desc'] : []),
+      ...(isAllCategoriesSelected ? (['discount-asc', 'discount-desc'] as SortOption[]) : []),
     ];
-    
+
     const currentIndex = sortOptions.indexOf(sortOption);
     const nextIndex = (currentIndex + 1) % sortOptions.length;
     onSortChange(sortOptions[nextIndex]);
@@ -61,4 +61,3 @@ export const FilterControls = ({
     </div>
   );
 };
-

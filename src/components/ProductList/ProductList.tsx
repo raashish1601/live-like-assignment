@@ -8,11 +8,7 @@ interface ProductListProps {
   onQuantityChange: (productId: number, quantity: number) => void;
 }
 
-export const ProductList = ({
-  products,
-  quantities,
-  onQuantityChange,
-}: ProductListProps) => {
+export const ProductList = ({ products, quantities, onQuantityChange }: ProductListProps) => {
   if (products.length === 0) {
     return (
       <div className="product-list product-list--empty">
@@ -34,4 +30,3 @@ export const ProductList = ({
     </div>
   );
 };
-

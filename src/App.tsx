@@ -1,62 +1,32 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { CategorySidebar } from './components/CategorySidebar/CategorySidebar';
 import { FilterControls } from './components/FilterControls/FilterControls';
 import { ProductList } from './components/ProductList/ProductList';
 import { PriceRangeFilter } from './components/PriceRangeFilter/PriceRangeFilter';
-import { ApiService } from './services/apiService';
+import { LoadingSpinner } from './components/LoadingSpinner/LoadingSpinner';
+import { ErrorMessage } from './components/ErrorMessage/ErrorMessage';
+import { useProducts } from './hooks/useProducts';
 import { addDiscountToProducts } from './utils/discountCalculator';
 import { filterByPriceRange, sortProducts } from './utils/productFilter';
-import { Product, SortOption } from './types';
+import { SortOption } from './types';
+import { DEFAULT_PRICE_RANGE } from './constants';
 import './App.css';
 import './components/PriceRangeFilter/PriceRangeFilterOverlay.css';
 
 function App() {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const { products: allProducts, categories, loading, error, priceBounds } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<SortOption>('none');
   const [showPriceFilter, setShowPriceFilter] = useState(false);
-  const [priceBounds, setPriceBounds] = useState({ min: 0, max: 1000 });
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [priceRange, setPriceRange] = useState(DEFAULT_PRICE_RANGE);
   const [quantities, setQuantities] = useState<Record<number, number>>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch categories and products on mount
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [categoriesData, productsData] = await Promise.all([
-          ApiService.fetchCategories(),
-          ApiService.fetchAllProducts(),
-        ]);
+    if (priceBounds.max > DEFAULT_PRICE_RANGE.max) {
+      setPriceRange(priceBounds);
+    }
+  }, [priceBounds]);
 
-        setCategories(categoriesData);
-        setAllProducts(productsData);
-
-        // Calculate initial price range from products
-        if (productsData.length > 0) {
-          const prices = productsData.map((p) => p.price);
-          const minPrice = Math.floor(Math.min(...prices));
-          const maxPrice = Math.ceil(Math.max(...prices));
-          setPriceBounds({ min: minPrice, max: maxPrice });
-          setPriceRange({ min: minPrice, max: maxPrice });
-        }
-      } catch (err) {
-        setError('Failed to load products. Please try again later.');
-        console.error('Error fetching data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Get products based on selected category
   const categoryProducts = useMemo(() => {
     if (!selectedCategory) {
       return allProducts;
@@ -64,28 +34,20 @@ function App() {
     return allProducts.filter((product) => product.category === selectedCategory);
   }, [allProducts, selectedCategory]);
 
-  // Add discount information to products
   const productsWithDiscount = useMemo(() => {
     return addDiscountToProducts(categoryProducts);
   }, [categoryProducts]);
 
-  // Filter products by price range
   const filteredProducts = useMemo(() => {
-    return filterByPriceRange(
-      productsWithDiscount,
-      priceRange.min,
-      priceRange.max
-    );
+    return filterByPriceRange(productsWithDiscount, priceRange.min, priceRange.max);
   }, [productsWithDiscount, priceRange]);
 
-  // Sort products
   const sortedProducts = useMemo(() => {
     return sortProducts(filteredProducts, sortOption);
   }, [filteredProducts, sortOption]);
 
   const handleCategorySelect = (category: string | null) => {
     setSelectedCategory(category);
-    // Reset sort option when switching categories (discount sorting only for all categories)
     if (category !== null && (sortOption === 'discount-asc' || sortOption === 'discount-desc')) {
       setSortOption('none');
     }
@@ -103,19 +65,11 @@ function App() {
   };
 
   if (loading) {
-    return (
-      <div className="app-loading">
-        <p>Loading products...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return (
-      <div className="app-error">
-        <p>{error}</p>
-      </div>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (
@@ -140,10 +94,7 @@ function App() {
       </div>
       {showPriceFilter && (
         <>
-          <div
-            className="price-range-filter-overlay"
-            onClick={() => setShowPriceFilter(false)}
-          />
+          <div className="price-range-filter-overlay" onClick={() => setShowPriceFilter(false)} />
           <PriceRangeFilter
             minPrice={priceBounds.min}
             maxPrice={priceBounds.max}
@@ -159,4 +110,3 @@ function App() {
 }
 
 export default App;
-
