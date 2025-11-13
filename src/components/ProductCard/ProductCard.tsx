@@ -9,8 +9,36 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, quantity, onQuantityChange }: ProductCardProps) => {
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuantity = parseInt(event.target.value, 10) || 0;
-    onQuantityChange(product.id, newQuantity);
+    const value = event.target.value;
+
+    if (value === '') {
+      onQuantityChange(product.id, 0);
+      return;
+    }
+
+    if (value.startsWith('0') && value.length > 1) {
+      const newValue = value.replace(/^0+/, '');
+      if (newValue === '') {
+        onQuantityChange(product.id, 0);
+        return;
+      }
+      const newQuantity = parseInt(newValue, 10);
+      if (!isNaN(newQuantity)) {
+        onQuantityChange(product.id, newQuantity);
+      }
+      return;
+    }
+
+    const newQuantity = parseInt(value, 10);
+    if (!isNaN(newQuantity)) {
+      onQuantityChange(product.id, newQuantity);
+    }
+  };
+
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (event.target.value === '0') {
+      event.target.select();
+    }
   };
 
   const displayPrice = product.discountedPrice || product.price;
@@ -43,8 +71,9 @@ export const ProductCard = ({ product, quantity, onQuantityChange }: ProductCard
             <input
               type="number"
               min="0"
-              value={quantity}
+              value={quantity || ''}
               onChange={handleQuantityChange}
+              onFocus={handleFocus}
               className="product-card__quantity-input"
             />
           </div>
